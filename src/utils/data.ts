@@ -243,11 +243,11 @@ export const MARQUEE_ITEMS = [
  * precisa conferir com o conselho.
  */
 export const FOUNDER: Founder = {
-  name: 'Dra. Marina Belmonte',
-  role: 'Fundadora e responsável técnica',
-  registry: 'CRM-SP 148.302 · RQE 62.114',
+  name: 'Ingrid',
+  role: 'CEO da Glowin Clínica',
+  registry: '',
   portrait: fundadora.src,
-  lead: 'A Glowin nasceu de um incômodo: pacientes chegavam ao consultório com a foto de um rosto que não era o delas, pedindo para virar outra pessoa. Marina passou a devolver a pergunta — o que, no seu próprio rosto, você quer de volta?',
+  lead: 'A Glowin nasceu de um incômodo: pacientes chegavam ao consultório com a foto de um rosto que não era o delas, pedindo para virar outra pessoa. Ingrid passou a devolver a pergunta — o que, no seu próprio rosto, você quer de volta?',
   body: 'Doze anos depois, é essa pergunta que abre toda primeira consulta da clínica. O resto — a técnica, o equipamento, o protocolo — vem depois, sempre nessa ordem, nunca ao contrário.',
   quote: 'Meu trabalho não é desenhar um rosto novo. É devolver o seu, descansado.',
   credentials: [

@@ -103,9 +103,11 @@ export const Founder: FC = () => (
             <motion.p variants={fadeInUp} className="label text-clay-light mt-3">
               {FOUNDER.role}
             </motion.p>
-            <motion.p variants={fadeInUp} className="label-num text-paper/40 mt-2">
-              {FOUNDER.registry}
-            </motion.p>
+            {FOUNDER.registry && (
+              <motion.p variants={fadeInUp} className="label-num text-paper/40 mt-2">
+                {FOUNDER.registry}
+              </motion.p>
+            )}
           </motion.div>
         </div>
 
