@@ -1,0 +1,570 @@
+@import "tailwindcss";
+
+/* ============================================================
+   GLOWIN — "ATELIÊ"
+   Sistema de design editorial-apothecary.
+
+   Papel quente + tinta pinho + acento terracota.
+   A página é clara por natureza; o escuro entra como pausa
+   dramática (Resultados, Convite, Rodapé) para criar ritmo.
+   ============================================================ */
+
+:root {
+  /* --- Papel: a base de tudo --- */
+  --paper: #f4f1e8;
+  --paper-2: #ece7da;
+  --paper-3: #ded6c2;
+
+  /* --- Pinho: a tinta. Verde tão profundo que lê como preto --- */
+  --pine: #13211c;
+  --pine-2: #1c3129;
+  --pine-3: #294538;
+
+  /* --- Jade: o verde vivo da marca (sinais, ícones, links) --- */
+  --jade: #2e6b57;
+  --jade-light: #57a087;
+
+  /* --- Terracota: o acento assinatura. Usado com parcimônia --- */
+  --clay: #bf5a33;
+  --clay-light: #dd8a5e;
+  --clay-soft: #f0d9cb;
+
+  /* --- Neutros quentes --- */
+  --sand: #a2977f;
+  --stone: #6c6656;
+
+  /* --- WhatsApp: verde de marca, reservado ao botão flutuante --- */
+  --whats: #0ca30c;
+  --whats-dark: #087d08;
+
+  --background: var(--paper);
+  --foreground: var(--pine);
+
+  --rule: rgba(19, 33, 28, 0.14);
+  --rule-strong: rgba(19, 33, 28, 0.28);
+  --rule-invert: rgba(244, 241, 232, 0.16);
+
+  --shadow-lift: 0 34px 80px -40px rgba(19, 33, 28, 0.55);
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-paper-3: var(--paper-3);
+
+  --color-pine: var(--pine);
+  --color-pine-2: var(--pine-2);
+  --color-pine-3: var(--pine-3);
+
+  --color-jade: var(--jade);
+  --color-jade-light: var(--jade-light);
+
+  --color-clay: var(--clay);
+  --color-clay-light: var(--clay-light);
+  --color-clay-soft: var(--clay-soft);
+
+  --color-sand: var(--sand);
+  --color-stone: var(--stone);
+  --color-whats: var(--whats);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-karla), "Helvetica Neue", sans-serif;
+  --font-mono: var(--font-space-mono), ui-monospace, monospace;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+@layer base {
+  * {
+    border-color: var(--rule);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--paper);
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--pine);
+    /* As pilhas abaixo apontam direto para as variáveis do next/font. Passar
+       por `var(--font-sans)` do tema não funciona: essa variável é declarada
+       em `:root`, onde `--font-fraunces` e companhia ainda não existem. */
+    font-family: var(--font-karla), "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* `clip` contém o transbordo lateral sem criar contêiner de rolagem —
+       necessário para o `position: sticky` do FAQ continuar funcionando. */
+    overflow-x: clip;
+  }
+
+  /* Compensa o cabeçalho fixo ao navegar pelas âncoras */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  ::selection {
+    background: var(--clay);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--clay);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 11px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--paper-2);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--pine-3);
+    border-radius: 999px;
+    border: 3px solid var(--paper-2);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--pine);
+  }
+}
+
+/* ============================================================
+   TIPOGRAFIA
+   ============================================================ */
+
+.font-display {
+  font-family: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+}
+
+/* Etiqueta monoespaçada — o "carimbo clínico" que estrutura a página */
+.label {
+  font-family: var(--font-space-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.label-num {
+  font-family: var(--font-space-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Números grandes e editoriais (estatísticas) */
+.numeral {
+  font-family: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.04em;
+}
+
+/* Sublinhado que cresce a partir da esquerda */
+.link-rule {
+  position: relative;
+}
+.link-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.18em;
+  height: 1px;
+  width: 0;
+  background: currentColor;
+  transition: width 0.5s var(--ease);
+}
+.link-rule:hover::after {
+  width: 100%;
+}
+
+/* ============================================================
+   TEXTURA — papel precisa parecer papel
+   ============================================================ */
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+}
+
+/* Grão global, fixo por cima de tudo — unifica a página inteira */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.1'/%3E%3C/svg%3E");
+}
+
+/* Trama de pontos — papel de caderno clínico */
+.dot-grid {
+  background-image: radial-gradient(rgba(19, 33, 28, 0.28) 0.8px, transparent 0.8px);
+  background-size: 22px 22px;
+}
+
+.dot-grid-invert {
+  background-image: radial-gradient(rgba(244, 241, 232, 0.18) 0.8px, transparent 0.8px);
+  background-size: 22px 22px;
+}
+
+/* Halo difuso — luz de estúdio, não "glow orb" genérico */
+.halo {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  background: radial-gradient(circle, var(--clay-soft) 0%, transparent 70%);
+}
+
+.halo-jade {
+  background: radial-gradient(circle, rgba(87, 160, 135, 0.32) 0%, transparent 70%);
+}
+
+/* ============================================================
+   FORMAS — o arco é a assinatura geométrica da marca
+   ============================================================ */
+
+.arch {
+  border-radius: 999rem 999rem 0.5rem 0.5rem;
+}
+
+.arch-soft {
+  border-radius: 12rem 12rem 1rem 1rem;
+}
+
+.arch-down {
+  border-radius: 0.5rem 0.5rem 999rem 999rem;
+}
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  overflow: hidden;
+  isolation: isolate;
+  font-family: var(--font-space-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease),
+    color 0.4s var(--ease), border-color 0.4s var(--ease);
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.975);
+}
+
+/* Preenchimento que sobe de baixo no hover — mais tátil que um fade */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translateY(101%);
+  transition: transform 0.55s var(--ease);
+}
+
+.btn:hover::before {
+  transform: translateY(0);
+}
+
+.btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Tinta sólida — ação principal */
+.btn-ink {
+  background: var(--pine);
+  color: var(--paper);
+  box-shadow: 0 12px 30px -16px rgba(19, 33, 28, 0.7);
+}
+.btn-ink::before {
+  background: var(--clay);
+}
+.btn-ink:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -18px rgba(191, 90, 51, 0.6);
+}
+
+/* Terracota — o convite */
+.btn-clay {
+  background: var(--clay);
+  color: var(--paper);
+  box-shadow: 0 12px 30px -16px rgba(191, 90, 51, 0.75);
+}
+.btn-clay::before {
+  background: var(--pine);
+}
+.btn-clay:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px -18px rgba(19, 33, 28, 0.55);
+}
+
+/* Contorno sobre papel */
+.btn-outline {
+  border: 1px solid var(--rule-strong);
+  color: var(--pine);
+}
+.btn-outline::before {
+  background: var(--pine);
+}
+.btn-outline:hover {
+  color: var(--paper);
+  border-color: var(--pine);
+  transform: translateY(-2px);
+}
+
+/* Contorno sobre pinho */
+.btn-outline-invert {
+  border: 1px solid var(--rule-invert);
+  color: var(--paper);
+}
+.btn-outline-invert::before {
+  background: var(--paper);
+}
+.btn-outline-invert:hover {
+  color: var(--pine);
+  border-color: var(--paper);
+  transform: translateY(-2px);
+}
+
+/* Papel sólido sobre pinho */
+.btn-paper {
+  background: var(--paper);
+  color: var(--pine);
+}
+.btn-paper::before {
+  background: var(--clay);
+}
+.btn-paper:hover {
+  color: var(--paper);
+  transform: translateY(-2px);
+}
+
+/* Anel pulsante do CTA final */
+.pulse-ring::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0;
+  animation: pulse-out 2.8s var(--ease) infinite;
+  z-index: -2;
+}
+
+@keyframes pulse-out {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   SUPERFÍCIES
+   ============================================================ */
+
+.card-paper {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease),
+    border-color 0.5s var(--ease);
+}
+
+.card-paper:hover {
+  transform: translateY(-5px);
+  border-color: var(--rule-strong);
+  box-shadow: var(--shadow-lift);
+}
+
+.card-ink {
+  position: relative;
+  background: var(--pine-2);
+  border: 1px solid var(--rule-invert);
+  transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease),
+    border-color 0.5s var(--ease);
+}
+
+.card-ink:hover {
+  transform: translateY(-5px);
+  border-color: rgba(244, 241, 232, 0.34);
+}
+
+/* Traço terracota que corre pelo topo do cartão no hover */
+.corner-tick::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 0;
+  height: 2px;
+  background: var(--clay);
+  transition: width 0.6s var(--ease);
+  z-index: 2;
+}
+.corner-tick:hover::before {
+  width: 4rem;
+}
+
+/* ============================================================
+   IMAGEM — tratamento fotográfico unificado
+   ============================================================ */
+
+/* Lavagem quente: as fotos passam a pertencer à mesma paleta */
+.photo-warm {
+  filter: saturate(0.86) contrast(1.04) sepia(0.12);
+}
+
+.photo-wash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    170deg,
+    rgba(240, 217, 203, 0.2),
+    rgba(19, 33, 28, 0.26)
+  );
+  mix-blend-mode: multiply;
+}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ============================================================
+   ANTES & DEPOIS
+   ============================================================ */
+
+.ba-seam {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--paper) 14%,
+    var(--paper) 86%,
+    transparent
+  );
+}
+
+.ba-handle {
+  box-shadow: 0 0 0 1px rgba(19, 33, 28, 0.4), 0 12px 32px -8px rgba(0, 0, 0, 0.65);
+}
+
+/* ============================================================
+   DIVERSOS
+   ============================================================ */
+
+.scroll-progress {
+  transform-origin: 0 50%;
+  background: var(--clay);
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-13px) rotate(1.2deg);
+  }
+}
+
+.drift {
+  animation: drift 8s ease-in-out infinite;
+}
+
+@keyframes slow-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.slow-spin {
+  animation: slow-spin 38s linear infinite;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Link de pulo para navegação por teclado */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -6rem;
+  z-index: 100;
+  background: var(--pine);
+  color: var(--paper);
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  transition: top 0.3s var(--ease);
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
